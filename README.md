@@ -14,6 +14,9 @@ Health Check
 
 To see applications health enter url `http://localhost:8081/healthcheck`. Right now there is no custom healthcheck registerd. 
 
+NOTE 
+---
+1. Error handling is missing in quite many places. IMO a heavy revisit require to do all corner case handling.   
 
 Assumptions
 ---
@@ -23,7 +26,8 @@ Assumptions
 TODO and limitation.
 ---
 1. Integration test not done.
-2. Paginated response is also common practice and could have been done. 
-3. Tons of unit test case is missing. A unit test case should be there for almost each file and each public function.
-4. Content of SykkelStativ what goes to user needs relook. Currently I put some data, but what data should go there must be though again.
-5. No security to access any of the resources. 
+1. Paginated response is also common practice and could have been done. 
+1. Tons of unit test case is missing. A unit test case should be there for almost each file and each public function.
+1. Content of SykkelStativ what goes to user needs relook. Currently I put some data, but what data should go there must be though again.
+1. No security to access any of the resources. 
+
