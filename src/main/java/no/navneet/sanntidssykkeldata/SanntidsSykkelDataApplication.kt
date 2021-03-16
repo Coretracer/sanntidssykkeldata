@@ -12,7 +12,6 @@ import no.navneet.sanntidssykkeldata.client.SykkelStativService
 import no.navneet.sanntidssykkeldata.configuration.SanntidsSykkelDataConfiguration
 import javax.ws.rs.client.Client
 
-
 class SanntidsSykkelDataApplication : Application<SanntidsSykkelDataConfiguration?>() {
     override fun getName(): String {
         return "sanntidssykkeldata"
@@ -43,7 +42,6 @@ class SanntidsSykkelDataApplication : Application<SanntidsSykkelDataConfiguratio
         val sanntidsDataClient = SanntidsDataClient(workerClient, configuration.endpoint.oslobySykkelUrl)
         return SykkelStativService(sanntidsDataClient)
     }
-
 
     private fun createWorkerClient(environment: Environment, configuration: SanntidsSykkelDataConfiguration): Client {
         val workerClient = JerseyClientBuilder(environment)

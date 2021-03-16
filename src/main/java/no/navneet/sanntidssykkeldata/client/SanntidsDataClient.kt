@@ -13,7 +13,6 @@ class SanntidsDataClient(
     private val sanntidsDataBaseUrl: String
 ) {
 
-
     fun getTilgjengeligheterDataViaApi(): OsloByTilgjengelighet? {
         val result = Try.ofSupplier { internalGetTilgjengeligheterViaApi() }
         return result.getOrElseGet {
@@ -32,7 +31,7 @@ class SanntidsDataClient(
 
     private fun internalGetTilgjengeligheterViaApi(): OsloByTilgjengelighet {
         return client
-            .target("${sanntidsDataBaseUrl}/${STASJON_STATUS_PATH}")
+            .target("$sanntidsDataBaseUrl/$STASJON_STATUS_PATH")
             .request()
             .header("Client-Identifier", "IDENTIFIER")
             .accept(MediaType.APPLICATION_JSON)
@@ -41,7 +40,7 @@ class SanntidsDataClient(
 
     private fun internalGetStasjonerViaApi(): OsloByStasjoner {
         return client
-            .target("${sanntidsDataBaseUrl}/${STASJON_INFORMASJON_PATH}")
+            .target("$sanntidsDataBaseUrl/$STASJON_INFORMASJON_PATH")
             .request()
             .header("Client-Identifier", "IDENTIFIER")
             .accept(MediaType.APPLICATION_JSON)

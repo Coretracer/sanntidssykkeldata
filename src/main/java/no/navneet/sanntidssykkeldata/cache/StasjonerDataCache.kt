@@ -32,5 +32,4 @@ class StasjonerDataCache(private val sanntidsDataClient: SanntidsDataClient) {
         const val DEFAULT_TTL = 10
         const val REFRESH_TIME_IN_SECONDS = 300L
     }
-
 }
