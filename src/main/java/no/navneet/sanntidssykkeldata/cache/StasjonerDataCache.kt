@@ -12,7 +12,8 @@ import java.util.concurrent.TimeUnit
 class StasjonerDataCache(private val sanntidsDataClient: SanntidsDataClient) {
 
     private val stasjonerDataCache: LoadingCache<String, OsloByStasjoner> = Caffeine.newBuilder()
-        .refreshAfterWrite(REFRESH_TIME_IN_SECONDS, TimeUnit.SECONDS)
+        .maximumSize(5)
+        .expireAfterWrite(REFRESH_TIME_IN_MINUTES, TimeUnit.MINUTES)
         .build { loadOsloByStasjoner() }
 
     init {
@@ -34,6 +35,6 @@ class StasjonerDataCache(private val sanntidsDataClient: SanntidsDataClient) {
     companion object {
         const val STASJONER_DATA_CACHE_NAME = "stasjonerDataCacheName"
         const val DEFAULT_TTL = 10
-        const val REFRESH_TIME_IN_SECONDS = 300L
+        const val REFRESH_TIME_IN_MINUTES = 5L
     }
 }

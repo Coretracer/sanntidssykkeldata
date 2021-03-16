@@ -18,7 +18,8 @@ Assumptions
 
 1. Stasjon and Tilgjengelighet data are not corrupted i.e. station id are not null and unique.  
 
-Choices
+TODO
 ---
-1. If data from api is null 
+1. Integration test
 2. Paginated response is also common practice and could have been done. 
+3. Tons of unit test case is missing. A unit test case should be there for almost each file and each public function

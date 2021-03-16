@@ -1,6 +1,7 @@
 package no.navneet.sanntidssykkeldata.cache
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import com.github.tomakehurst.wiremock.WireMockServer
 import com.github.tomakehurst.wiremock.client.WireMock
 import no.navneet.sanntidssykkeldata.api.external.Stasjoner.Stasjon
@@ -30,7 +31,7 @@ object StasjonerApiStub {
                                         "last_updated": 1615855271,
                                         "ttl": 10,
                                          "data": {
-                                            "stations": [  ${jacksonObjectMapper().writeValueAsString(stations)} ]
+                                            "stations": [  ${jacksonObjectMapper().registerKotlinModule().writeValueAsString(stations)} ]
                                          }
                                     }
                                    """
