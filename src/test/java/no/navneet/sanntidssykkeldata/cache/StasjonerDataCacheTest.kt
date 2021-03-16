@@ -1,51 +1,88 @@
 package no.navneet.sanntidssykkeldata.cache
 
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import com.fasterxml.jackson.module.kotlin.registerKotlinModule
+import com.github.tomakehurst.wiremock.WireMockServer
 import com.github.tomakehurst.wiremock.client.WireMock
 import com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration
-import com.github.tomakehurst.wiremock.junit.WireMockRule
+import io.dropwizard.testing.junit5.DropwizardAppExtension
+import io.dropwizard.testing.junit5.DropwizardExtensionsSupport
+import no.navneet.sanntidssykkeldata.SanntidsSykkelDataApplication
 import no.navneet.sanntidssykkeldata.client.SanntidsDataClient
+import no.navneet.sanntidssykkeldata.configuration.SanntidsSykkelDataConfiguration
 import org.assertj.core.api.Assertions.assertThat
 import org.awaitility.kotlin.await
-import org.glassfish.jersey.client.ClientConfig
-import org.glassfish.jersey.client.JerseyClientBuilder
-import org.junit.Rule
-import org.junit.Test
-import javax.ws.rs.client.Client
+import org.junit.jupiter.api.AfterEach
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.extension.ExtendWith
+import java.io.File
 
+@ExtendWith(DropwizardExtensionsSupport::class)
 class StasjonerDataCacheTest {
-    @Rule
+
     @JvmField
-    val sanntidsDataWireMockServer = WireMockRule(
+    val sanntidsDataWireMockServer = WireMockServer(
         WireMockConfiguration.wireMockConfig().dynamicPort()
     )
 
-    private val client = getClient()
-
-    init {
+    @BeforeEach
+    fun beforeEach() {
+        sanntidsDataWireMockServer.start()
         StasjonerApiStub.stubStasjonerData(sanntidsDataWireMockServer)
+    }
+
+    @AfterEach
+    fun afterEach() {
+        sanntidsDataWireMockServer.stop()
     }
 
     @Test
     fun testLoadOfCache() {
+
         val cache = StasjonerDataCache(
             SanntidsDataClient(
-                client,
+                EXT.client(),
                 "http://localhost:${sanntidsDataWireMockServer.port()}"
             )
         )
         await.untilAsserted {
-            WireMock.verify(WireMock.getRequestedFor(urlEqualTo("/${SanntidsDataClient.STASJON_INFORMASJON_PATH}")))
+            sanntidsDataWireMockServer.verify(WireMock.getRequestedFor(urlEqualTo("/${SanntidsDataClient.STASJON_INFORMASJON_PATH}")))
         }
 
         assertThat(cache.getOsloByStasjoner()).isNotNull
     }
 
-    fun getClient(): Client {
-        val configuration = ClientConfig().configuration
-            .register(jacksonObjectMapper().registerKotlinModule())
-        return JerseyClientBuilder().withConfig(configuration).build()
+    @Test
+    fun verifyCachingByMultipleCallDoesNotInvokeMultipleApiRequest() {
+
+        val cache = StasjonerDataCache(
+            SanntidsDataClient(
+                EXT.client(),
+                "http://localhost:${sanntidsDataWireMockServer.port()}"
+            )
+        )
+        await.untilAsserted {
+            sanntidsDataWireMockServer.verify(WireMock.getRequestedFor(urlEqualTo("/${SanntidsDataClient.STASJON_INFORMASJON_PATH}")))
+        }
+
+        assertThat(cache.getOsloByStasjoner()).isNotNull
+        assertThat(cache.getOsloByStasjoner()).isNotNull
+        assertThat(cache.getOsloByStasjoner()).isNotNull
+        assertThat(cache.getOsloByStasjoner()).isNotNull
+
+        sanntidsDataWireMockServer.verify(
+            1,
+            WireMock.getRequestedFor(urlEqualTo("/${SanntidsDataClient.STASJON_INFORMASJON_PATH}"))
+        )
+    }
+
+    companion object {
+
+        @JvmStatic
+        private val EXT: DropwizardAppExtension<SanntidsSykkelDataConfiguration> =
+            DropwizardAppExtension<SanntidsSykkelDataConfiguration>(
+                SanntidsSykkelDataApplication::class.java,
+                File("src/main/resources/config.yml").toPath().toAbsolutePath().toString()
+            )
     }
 }

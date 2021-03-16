@@ -29,6 +29,7 @@
         <wiremock.version>2.26.3</wiremock.version>
         <awaitility-kotlin.version>4.0.2</awaitility-kotlin.version>
         <assertj-core.version>3.12.0</assertj-core.version>
+        <kotlin-test-junit5.version>1.4.31</kotlin-test-junit5.version>
         <jib.container.appRoot>/app</jib.container.appRoot>
     </properties>
 
@@ -99,10 +100,17 @@
             <artifactId>vavr</artifactId>
             <version>${vavr.version}</version>
         </dependency>
+
+        <!--Test libs-->
+        <dependency>
+            <groupId>io.dropwizard</groupId>
+            <artifactId>dropwizard-testing</artifactId>
+            <scope>test</scope>
+        </dependency>
         <dependency>
             <groupId>org.jetbrains.kotlin</groupId>
-            <artifactId>kotlin-test-junit</artifactId>
-            <version>${kotlin.version}</version>
+            <artifactId>kotlin-test-junit5</artifactId>
+            <version>${kotlin-test-junit5.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
