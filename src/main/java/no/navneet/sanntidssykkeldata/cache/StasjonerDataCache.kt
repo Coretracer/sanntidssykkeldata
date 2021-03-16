@@ -15,6 +15,10 @@ class StasjonerDataCache(private val sanntidsDataClient: SanntidsDataClient) {
         .refreshAfterWrite(REFRESH_TIME_IN_SECONDS, TimeUnit.SECONDS)
         .build { loadOsloByStasjoner() }
 
+    init {
+        stasjonerDataCache.get(STASJONER_DATA_CACHE_NAME)
+    }
+
     fun getOsloByStasjoner(): OsloByStasjoner {
         return stasjonerDataCache.get(STASJONER_DATA_CACHE_NAME) ?: OsloByStasjoner(
             Data(emptyList()),

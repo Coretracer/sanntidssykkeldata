@@ -5,6 +5,7 @@ import no.navneet.sanntidssykkeldata.api.external.Stasjoner.OsloByStasjoner
 import no.navneet.sanntidssykkeldata.api.external.Tilgjengelighet.OsloByTilgjengelighet
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
+import java.net.URI
 import javax.ws.rs.client.Client
 import javax.ws.rs.core.MediaType
 
@@ -31,7 +32,7 @@ class SanntidsDataClient(
 
     private fun internalGetTilgjengeligheterViaApi(): OsloByTilgjengelighet {
         return client
-            .target("$sanntidsDataBaseUrl/$STASJON_STATUS_PATH")
+            .target(URI.create("$sanntidsDataBaseUrl/$STASJON_STATUS_PATH"))
             .request()
             .header("Client-Identifier", "IDENTIFIER")
             .accept(MediaType.APPLICATION_JSON)
