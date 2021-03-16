@@ -2,3 +2,14 @@ logging:
   level: INFO
   loggers:
     no.navneet: DEBUG
+
+swagger:
+  resourcePackage: "no.navneet.sanntidssykkeldata"
+
+jerseyClient:
+  minThreads: 1
+  timeout: 3s
+  connectionTimeout: 3s
+
+endpoint:
+  oslobySykkelUrl: "https://gbfs.urbansharing.com/oslobysykkel.no"

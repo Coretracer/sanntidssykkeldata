@@ -17,10 +17,13 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <dropwizard.version>2.0.20</dropwizard.version>
-        <mainClass>no.navneet.SanntidsSykkelDataApplication</mainClass>
+        <mainClass>no.navneet.sanntidssykkeldata.SanntidsSykkelDataApplication</mainClass>
         <kotlin.version>1.4.31</kotlin.version>
         <okhttp.version>4.9.1</okhttp.version>
         <jackson-module-kotlin.version>2.9.7</jackson-module-kotlin.version>
+        <caffeine.version>2.9.0</caffeine.version>
+        <dropwizard-swagger.version>2.0.12-1</dropwizard-swagger.version>
+        <vavr.version>0.10.3</vavr.version>
     </properties>
 
     <dependencyManagement>
@@ -39,6 +42,10 @@
         <dependency>
             <groupId>io.dropwizard</groupId>
             <artifactId>dropwizard-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.dropwizard</groupId>
+            <artifactId>dropwizard-client</artifactId>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
@@ -70,6 +77,21 @@
             <artifactId>kotlin-reflect</artifactId>
             <version>${kotlin.version}</version>
             <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.smoketurner</groupId>
+            <artifactId>dropwizard-swagger</artifactId>
+            <version>${dropwizard-swagger.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.ben-manes.caffeine</groupId>
+            <artifactId>caffeine</artifactId>
+            <version>${caffeine.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.vavr</groupId>
+            <artifactId>vavr</artifactId>
+            <version>${vavr.version}</version>
         </dependency>
     </dependencies>
 
@@ -153,7 +175,7 @@
                         <image>gcr.io/distroless/java:11</image>
                     </from>
                     <to>
-                            <image>sanntids-sykkel-service</image>
+                        <image>sanntids-sykkel-service</image>
                     </to>
                     <container>
                         <args>
